@@ -25,5 +25,8 @@
   "homepage": "https://github.com/djMax/pbkdf2-simple-crypt",
   "dependencies": {
     "debuglog": "^1.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
   }
 }
