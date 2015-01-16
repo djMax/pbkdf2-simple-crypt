@@ -62,4 +62,15 @@ describe('/', function () {
             done();
         });
     });
+
+    it('should encrypt and decrypt using base64', function (done) {
+        crypt.encrypt(new Buffer(plainText), password, function (err, cipher) {
+            assert.ifError(err);
+            crypt.decrypt(new Buffer(cipher, 'base64'), password, function (decErr, plain) {
+                assert.ifError(decErr);
+                assert.equal(plain, plainText);
+                done();
+            });
+        });
+    });
 });

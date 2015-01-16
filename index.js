@@ -44,7 +44,7 @@ external.encrypt = function (plainText, password, callback) {
  * Decrypt a base64 encoded string that came from encrypt using the same password
  */
 external.decrypt = function (cipherText, password, callback) {
-    var cipher = new Buffer(cipherText, 'base64');
+    var cipher = Buffer.isBuffer(cipherText) ? cipherText : new Buffer(cipherText, 'base64');
     var salt = cipher.slice(0, 16);
 
     crypto.pbkdf2(password, salt, external.ITERATIONS, 32, function (err, key) {
