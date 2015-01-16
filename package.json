@@ -27,6 +27,7 @@
     "debuglog": "^1.0.1"
   },
   "devDependencies": {
+    "coveralls": "^2.11.2",
     "mocha": "^2.1.0"
   }
 }
