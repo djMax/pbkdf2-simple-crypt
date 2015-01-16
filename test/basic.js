@@ -28,10 +28,38 @@ describe('/', function () {
     });
 
     it('should decrypt known good cipher text to make sure the format does not change', function (done) {
-       crypt.decrypt(knownCipher, password, function (decErr, plain) {
-           assert.ifError(decErr);
-           assert.equal(plain, plainText);
-           done();
-       });
+        crypt.decrypt(knownCipher, password, function (decErr, plain) {
+            assert.ifError(decErr);
+            assert.equal(plain, plainText);
+            done();
+        });
+    });
+
+    it('should not decrypt junk', function (done) {
+        crypt.decrypt('DvlJmD/UVXCosIFraKBwOjJWc0Vs7SWR8LDizGW04/D3rXuIX1hfN69F7osbL0pG98mGKJXyenzQyTeidONL4sLFmSk3TKDkEZaq0gbDMU9yff5ogw==', password, function (decErr, plain) {
+            assert(decErr);
+            assert.equal(decErr.message, 'HMAC Mismatch!');
+            done();
+        });
+    });
+
+    it('should not decrypt with the wrong password', function (done) {
+        crypt.decrypt(knownCipher, 'badnews', function (decErr, plain) {
+            assert(decErr);
+            assert.equal(decErr.message, 'HMAC Mismatch!');
+            done();
+        });
+    });
+
+    it('should verify the hmac', function (done) {
+
+        var buf = new Buffer(knownCipher, 'base64');
+        buf[40]++;
+
+        crypt.decrypt(buf.toString('base64'), 'badnews', function (decErr, plain) {
+            assert(decErr);
+            assert.equal(decErr.message, 'HMAC Mismatch!');
+            done();
+        });
     });
 });
